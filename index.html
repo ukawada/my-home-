@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>おしゃれなホームページ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- 🔑 パスワード画面用スタイル -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+    body { font-family: 'Raleway', sans-serif; background: linear-gradient(135deg, #c3ecff, #f9e7ff); color: #000; }
+
+    /* パスワード入力画面 */
+    #password-screen {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      z-index: 2000;
+      flex-direction: column;
+      text-align: center;
+    }
+    #password-screen input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+    #password-screen button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #00aaff;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #password-screen button:hover { background: #0088cc; }
+  </style>
+
+  <!-- 元のスタイル -->
+  <style>
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+    nav {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 1.5rem; font-weight: bold; color: #fff; }
+    .nav-links a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover { color: #00aaff; }
+    .hero {
+      height: 100vh;
+      position: relative;
+      background: url('S__23306246_0.jpg') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 70px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+    .glass-card {
+      position: relative;
+      z-index: 2;
+      background: transparent;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      text-align: center;
+      border: none;
+      color: #fff;
+    }
+    .glass-card h2 { font-size: 2.5rem; margin-bottom: 20px; }
+    .glass-card p { font-size: 1.2rem; margin-bottom: 30px; }
+    .btn {
+      background-color: #fff;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .btn:hover { background-color: #ddd; }
+    section {
+      padding: 100px 20px;
+      text-align: center;
+      background-color: #fff;
+    }
+    section:nth-of-type(even) { background-color: #f4f4f4; }
+    section h2 { font-size: 2rem; margin-bottom: 20px; }
+    section p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: left;
+      line-height: 1.6;
+    }
+    .company-info { max-width: 700px; margin: 0 auto; text-align: left; font-size: 1.1rem; line-height: 1.6; color: #333; }
+    .company-info dl { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+    .company-info dt { flex: 0 0 120px; font-weight: bold; color: #000; }
+    .company-info dd { flex: 1 1 auto; margin: 0; }
+    .contact-form { max-width: 600px; margin: 30px auto 0; text-align: left; background: rgba(255,255,255,0.8); padding:30px; border-radius:15px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display:block; margin-bottom:8px; font-weight:bold; color:#000; }
+    .form-group input, .form-group textarea { width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; font-size:1rem; font-family:inherit; }
+    .form-group textarea { resize: vertical; }
+    .business-img { width:100%; max-width:800px; }
+    .reason-card img { width:500px; max-width:100%; height:auto; }
+  </style>
+</head>
+<body>
+
+  <!-- パスワード画面 -->
+  <div id="password-screen">
+    <h2>パスワードを入力してください</h2>
+    <input type="password" id="password-input" placeholder="パスワード">
+    <button onclick="checkPassword()">送信</button>
+    <p id="error-msg" style="color:red;margin-top:10px;"></p>
+  </div>
+
+  <!-- 本文 -->
+  <div id="content" style="display:none;">
+    <header>
+      <nav>
+        <div class="logo">MySite</div>
+        <div class="nav-links">
+          <a href="#home">ホーム</a>
+          <a href="#about">創業の思い</a>
+          <a href="#business">事業概要</a>
+          <a href="#company">会社概要</a>
+          <a href="#contact">お問い合わせ</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="hero" id="home">
+      <div class="glass-card">
+        <h2>外国人サービスに安心感を</h2>
+        <p>外国人採用に安心感を。私達は外国人人材サービスを通じて日本企業を支えるとともに、外国人人材が日本で幸せな人生を送れるよう応援します</p>
+        <a href="#about" class="btn">もっと見る</a>
+      </div>
+    </div>
+
+    <section id="about">
+      <h2>創業の思い</h2>
+      <p>人口減少に歯止めがかからない今、外国人人材にたよらざるを得ないのが日本の現状です。そして異なる言語、異なる文化背景の外国人採用において、企業が最も重視していることは、就労する前だけでなく、就労した後においても「安心感」を得ることだと考えています。</p>
+    </section>
+
+    <section>
+      <p>日本企業を人材で支え、同時に人生を賭けて来日した外国人を応援したい。その想いから起業しました。自身も日本の大学へ留学し、卒業後に就職した経験を活かし、特に必要と感じた就労後のサポートを強化しています。また、ご紹介する外国人人材について、採用企業により安心していただく為、私たちは海外の現地ミャンマーに日本語学校と送り出し機関を設立しました。来日前から日本で働きたいと考える一人ひとりに寄り添い、日本へ安定的に人材の導入を図れる体制をとっています。外国人人材の導入はこれから増々加速します。採用企業と外国人人材の双方が安心できるよう、その架け橋を私たちが担っていきます。代表取締役　アサドザマン・カーン </p>
+    </section>
+
+    <section id="business">
+      <h2>事業概要</h2>
+      <h1>外国人採用支援事業</h1>
+      <img src="31517722_s.jpg" alt="事業内容の画像" class="business-img" />
+      <p>受入れ企業、外国人人材ともに安心して働けるよう、双方に寄り添い、サポートいたします。現在、介護、IT、農業、外食産業において導入人材が活躍しています。企業ニーズに合わせて、海外現地からだけでなく、留学生を含む国内からの最適な人材をご紹介します。</p>
+
+      <h2>私たちが選ばれる理由</h2>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px;">
+        <div class="reason-card" style="max-width:300px; background:#f9f9f9; padding:20px; border-radius:15px;">
+          <img src="32081932_s.jpg" alt="一貫した人材サービス">
+          <h3>1. 一貫した人材サービス</h3>
+          <p>海外現地ミャンマーに日本語学校、送り出し機関を設立しました。我々が「面識のない」人材をご紹介することはありません。また、中間外注業者を挟まないことにより、費用面でもご納得いただけるよう努力しています。</p>
+        </div>
+
+        <div class="reason-card" style="max-width:300px; background:#f9f9f9; padding:20px; border-radius:15px;">
+          <img src="4374922_s.jpg" alt="特徴2">
+          <h3>2. 継続した日本語教育</h3>
+          <p>就労前だけでなく、就労後も継続した日本語教育の場を提供しています。日本語能力試験対策に加え、日本文化や一般マナー等、日本で働く上で円滑に業務ができるよう、教育フォローを実施しています。</p>
+        </div>
+
+        <div class="reason-card" style="max-width:300px; background:#f9f9f9; padding:20px; border-radius:15px;">
+          <img src="360_F_271532779_LizYlX9U9wckiKRBVlVtToPalvcF11cC.jpg" alt="特徴3">
+          <h3>3. 安心のライフサポート</h3>
+          <p>24時間365日、外国人人材に何か問題が生じた際、「母国語」で対応できるよう、体制を整えています。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="company">
+      <h2>会社概要</h2>
+      <div class="company-info">
+        <h2>会社名</h2>
+        <p>株式会社BM AI JP</p>
+        <h2>設立</h2>
+        <dd>2019年9月2日</dd>
+        <h2>所在地</h2>
+        <p>〒105-0004 東京都中央区新川一丁目7-1  天翔オフィス日本橋茅場町</p>
+        <h2>資本金</h2>
+        <p>600万円</p>
+        <h2>取引先銀行</h2>
+        <p>みずほ銀行、住信SBIネット銀行、 芝信用金庫</p>
+        <h2>事業内容</h2>
+        <p>有料職業紹介事業、 特定技能1号外国人登録支援機関</p>
+        <h2>事業許可</h2>
+        <p>有料職業紹介13ーユー316067、 登録支援機関許可20登ー005164</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>お問い合わせ</h2>
+      <form action="#" method="post" class="contact-form">
+        <div class="form-group">
+          <label for="name">お名前</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">メールアドレス</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="message">メッセージ</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn">送信</button>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const input = document.getElementById("password-input").value;
+      const correct = "bm2025"; // ← パスワード変更可能
+      if(input === correct) {
+        document.getElementById("password-screen").style.display = "none";
+        document.getElementById("content").style.display = "block";
+      } else {
+        document.getElementById("error-msg").textContent = "パスワードが違います";
+      }
+    }
+  </script>
+</body>
+</html>
